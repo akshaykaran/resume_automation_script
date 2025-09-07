@@ -71,9 +71,19 @@ def update_resume_on_naukri(username, password):
         time.sleep(random.uniform(1, 3))
 
         logger.info("Clicking on the Login button...")
-        login_submit_button = driver.find_element(By.XPATH, "//button[@type='submit']")
+        # login_submit_button = driver.find_element(By.XPATH, "//button[@type='submit']")
+        # login_submit_button.click()
+        # time.sleep(random.uniform(5, 7))
+
+        login_submit_button = WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
+        )
         login_submit_button.click()
-        time.sleep(random.uniform(5, 7))
+
+        # Wait until redirect to homepage is successful
+        WebDriverWait(driver, 30).until(
+        EC.url_contains("mnjuser/homepage")
+        )
 
         driver.get('https://www.naukri.com/mnjuser/homepage')
         time.sleep(random.uniform(3, 5))
