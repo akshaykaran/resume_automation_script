@@ -36,7 +36,7 @@ def update_resume_on_naukri(username, password):
         chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
         logger.info("Initializing WebDriver...")
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager(version="latest").install()), options=chrome_options)
         driver.maximize_window()
         
         logger.info("Opening Naukri website...")
