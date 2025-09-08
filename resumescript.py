@@ -44,7 +44,7 @@ def update_resume_on_naukri(username, password):
 
         logger.info("Initializing WebDriver...")
         driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
+            service=Service(ChromeDriverManager(driver_version="139.0.7258.155").install()),
             options=chrome_options
         )
 
