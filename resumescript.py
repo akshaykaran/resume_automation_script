@@ -23,26 +23,39 @@ logging.basicConfig(
 )
 logger = logging.getLogger()
 
+
 def update_resume_on_naukri(username, password):
     driver = None
     try:
         logger.info("Setting up Chrome options...")
         chrome_options = Options()
         chrome_options.add_argument("--headless=new")  # Headless for Jenkins
-        # chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--window-size=1920,1080")
-        chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option('useAutomationExtension', False)
+        chrome_options.add_argument(
+            "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/139.0.7258.155 Safari/537.36"
+        )
 
         logger.info("Initializing WebDriver...")
         driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager(driver_version="139.0.7258.155").install()),
+            service=Service(ChromeDriverManager().install()),
             options=chrome_options
         )
-        driver.maximize_window()
-        
+
+        # Mask navigator.webdriver flag to reduce bot detection
+        driver.execute_cdp_cmd(
+            "Page.addScriptToEvaluateOnNewDocument",
+            {
+                "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            },
+        )
+
         logger.info("Opening Naukri website...")
         driver.get("https://www.naukri.com/")
         time.sleep(random.uniform(2, 5))
@@ -84,10 +97,23 @@ def update_resume_on_naukri(username, password):
             logger.info("Login successful. Navigating to profile page...")
             driver.get('https://www.naukri.com/mnjuser/profile')
             time.sleep(random.uniform(5, 10))
-        except:
-            logger.error("Login failed - still on login page.")
-            driver.save_screenshot("login_failed.png")
-            logger.info(driver.page_source[:2000])  # Dump part of page for debug
+
+        except Exception as e:
+            logger.error("Login failed - still on login page or blocked.")
+            
+            # Save screenshot
+            screenshot_path = "login_failed.png"
+            driver.save_screenshot(screenshot_path)
+            logger.info(f"Saved screenshot to {screenshot_path}")
+
+            # Save full HTML
+            html_path = "login_failed.html"
+            with open(html_path, "w", encoding="utf-8") as f:
+                f.write(driver.page_source)
+            logger.info(f"Saved page HTML to {html_path}")
+
+            # Log snippet for quick debugging
+            logger.info(driver.page_source[:2000])
             return False
 
         logger.info("Clicking on the 'Update Resume' button...")
@@ -103,11 +129,11 @@ def update_resume_on_naukri(username, password):
         logger.info("Uploading the resume file...")
         script_dir = os.path.dirname(os.path.abspath(__file__))
         resume_path = os.path.join(script_dir, "utils", "Akshay_Vinayak.pdf")
-        
+
         if not os.path.exists(resume_path):
             logger.error(f"Resume file not found at: {resume_path}")
             return False
-            
+
         resume_file_input = driver.find_element(By.XPATH, "//input[@type='file']")
         resume_file_input.send_keys(resume_path)
         time.sleep(random.uniform(5, 7))
@@ -127,6 +153,7 @@ def update_resume_on_naukri(username, password):
         if driver:
             driver.quit()
 
+
 def main():
     username = os.getenv("NAUKRI_USERNAME")
     password = os.getenv("NAUKRI_PASSWORD")
@@ -134,16 +161,17 @@ def main():
     if not username or not password:
         logger.error("Missing credentials. Set NAUKRI_USERNAME and NAUKRI_PASSWORD environment variables.")
         sys.exit(1)
-    
+
     logger.info(f"Starting the resume update process at {datetime.datetime.now()}...")
     success = update_resume_on_naukri(username, password)
-    
+
     if success:
         logger.info("Resume update process completed successfully.")
         sys.exit(0)
     else:
         logger.warning("Resume update process completed with errors.")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
