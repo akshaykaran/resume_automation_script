@@ -56,8 +56,6 @@ def update_resume_on_naukri(username, password):
         login_button.click()
         time.sleep(random.uniform(1, 3))
 
-        logger.info(f"Using username: {username}, password length: {len(password)}")
-
         logger.info("Entering username...")
         username_field = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.XPATH, "//input[@placeholder='Enter your active Email ID / Username']"))
@@ -87,7 +85,11 @@ def update_resume_on_naukri(username, password):
 
         logger.info("Clicking on the 'Update Resume' button...")
         update_resume_button = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.XPATH, "//input[@value='Update resume']"))
+            # EC.presence_of_element_located((By.XPATH, "//input[@value='Update resume']"))
+            EC.element_to_be_clickable((
+            By.XPATH,
+            "//button[contains(., 'Update Resume')] | //span[contains(., 'Update Resume')] | //input[@value='Update resume']"
+            ))
         )
         update_resume_button.click()
         time.sleep(random.uniform(2, 4))
