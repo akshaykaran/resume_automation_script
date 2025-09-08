@@ -28,7 +28,8 @@ def update_resume_on_naukri(username, password):
     try:
         logger.info("Setting up Chrome options...")
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Headless for Jenkins
+        chrome_options.add_argument("--headless=new")  # Headless for Jenkins
+        # chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
