@@ -28,7 +28,7 @@ def update_resume_on_naukri(username, password):
     try:
         logger.info("Setting up Chrome options...")
         chrome_options = Options()
-        #chrome_options.add_argument("--headless")  # Run in headless mode when automated
+        chrome_options.add_argument("--headless=new")  # Run in headless mode when automated
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
@@ -37,6 +37,7 @@ def update_resume_on_naukri(username, password):
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option('useAutomationExtension', False)
         chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+        chrome_options.add_argument(f"--user-data-dir={os.getenv('CHROME_USER_DATA_DIR')}")
 
         logger.info("Initializing WebDriver...")
         chrome_options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
@@ -83,7 +84,9 @@ def update_resume_on_naukri(username, password):
         )
         login_submit_button.click()
         try:
-            WebDriverWait(driver, 30).until(EC.url_contains("mnjuser/homepage"))
+            WebDriverWait(driver, 30).until(
+            lambda d: "homepage" in d.current_url or "profile" in d.current_url
+            )
             logger.info("Login successful, redirected to homepage")
         except:
             logger.error(f"Login likely failed, still on: {driver.current_url}")
