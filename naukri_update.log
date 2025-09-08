@@ -27,3 +27,71 @@
 2025-09-07 19:32:39,779 - INFO - Resume updated successfully on Naukri at: 2025-09-07 19:32:39.779690
 2025-09-07 19:32:39,780 - INFO - Closing the browser...
 2025-09-07 19:32:43,086 - INFO - Resume update process completed successfully.
+2025-09-08 09:24:21,201 - ERROR - Missing credentials. Set NAUKRI_USERNAME and NAUKRI_PASSWORD environment variables.
+2025-09-08 09:25:38,079 - INFO - Starting the resume update process at 2025-09-08 09:25:38.079727...
+2025-09-08 09:25:38,080 - INFO - Setting up Chrome options...
+2025-09-08 09:25:38,080 - INFO - Initializing WebDriver...
+2025-09-08 09:25:38,081 - INFO - ====== WebDriver manager ======
+2025-09-08 09:25:41,572 - INFO - There is no [win64] chromedriver "139.0.7258.155" for browser google-chrome "139.0.7258" in cache
+2025-09-08 09:25:42,370 - INFO - WebDriver version 139.0.7258.154 selected
+2025-09-08 09:25:42,377 - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.154/win32/chromedriver-win32.zip
+2025-09-08 09:25:42,378 - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.154/win32/chromedriver-win32.zip
+2025-09-08 09:25:42,633 - INFO - Driver downloading response is 200
+2025-09-08 09:25:43,645 - INFO - Driver has been saved in cache [C:\Users\aksha\.wdm\drivers\chromedriver\win64\139.0.7258.155]
+2025-09-08 09:25:48,001 - ERROR - An error occurred: Message: session not created: Chrome failed to start: crashed.
+  (session not created: DevToolsActivePort file doesn't exist)
+  (The process started from chrome location C:\Program Files\Google\Chrome\Application\chrome.exe is no longer running, so ChromeDriver is assuming that Chrome has crashed.); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#sessionnotcreatedexception
+Stacktrace:
+	GetHandleVerifier [0x0x7da8a3+63283]
+	GetHandleVerifier [0x0x7da8e4+63348]
+	(No symbol) [0x0x613e43]
+	(No symbol) [0x0x647e25]
+	(No symbol) [0x0x643229]
+	(No symbol) [0x0x68ce69]
+	(No symbol) [0x0x68c77a]
+	(No symbol) [0x0x681216]
+	(No symbol) [0x0x650855]
+	(No symbol) [0x0x6516f4]
+	GetHandleVerifier [0x0xa4bb43+2623955]
+	GetHandleVerifier [0x0xa46daa+2604090]
+	GetHandleVerifier [0x0x80069a+218410]
+	GetHandleVerifier [0x0x7f0ed8+154984]
+	GetHandleVerifier [0x0x7f742d+180925]
+	GetHandleVerifier [0x0x7e22b8+94536]
+	GetHandleVerifier [0x0x7e2442+94930]
+	GetHandleVerifier [0x0x7cd5ea+9338]
+	BaseThreadInitThunk [0x0x77635d49+25]
+	RtlInitializeExceptionChain [0x0x77cdd6db+107]
+	RtlGetAppContainerNamedObjectPath [0x0x77cdd661+561]
+
+2025-09-08 09:25:48,031 - INFO - Closing the browser...
+2025-09-08 09:25:48,032 - WARNING - Resume update process completed with errors.
+2025-09-08 09:28:19,360 - ERROR - Missing credentials. Set NAUKRI_USERNAME and NAUKRI_PASSWORD environment variables.
+2025-09-08 09:29:01,239 - INFO - Starting the resume update process at 2025-09-08 09:29:01.239369...
+2025-09-08 09:29:01,240 - INFO - Setting up Chrome options...
+2025-09-08 09:29:01,240 - INFO - Initializing WebDriver...
+2025-09-08 09:29:01,240 - INFO - ====== WebDriver manager ======
+2025-09-08 09:29:03,962 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 09:29:04,330 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 09:29:04,655 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 09:29:05,717 - INFO - WebDriver version 139.0.7258.154 selected
+2025-09-08 09:29:05,726 - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.154/win32/chromedriver-win32.zip
+2025-09-08 09:29:05,726 - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.154/win32/chromedriver-win32.zip
+2025-09-08 09:29:05,974 - INFO - Driver downloading response is 200
+2025-09-08 09:29:06,769 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 09:29:07,436 - INFO - Driver has been saved in cache [C:\Users\aksha\.wdm\drivers\chromedriver\win64\139.0.7258.154]
+2025-09-08 09:29:11,649 - INFO - Opening Naukri website...
+2025-09-08 09:29:20,474 - INFO - Checking for CAPTCHA or blocking...
+2025-09-08 09:29:20,647 - INFO - Waiting for the Login button...
+2025-09-08 09:29:22,734 - INFO - Entering username...
+2025-09-08 09:29:26,111 - INFO - Entering password...
+2025-09-08 09:29:28,462 - INFO - Clicking on the Login button...
+2025-09-08 09:29:37,870 - INFO - Opening User's Naukari homepage...
+2025-09-08 09:29:37,886 - INFO - Current page URL: https://www.naukri.com/mnjuser/homepage
+2025-09-08 09:29:48,570 - INFO - Navigating to the Profile section...
+2025-09-08 09:29:48,582 - INFO - Current page URL: https://www.naukri.com/mnjuser/profile
+2025-09-08 09:29:48,582 - INFO - Clicking on the 'Update Resume' button...
+2025-09-08 09:29:51,878 - INFO - Uploading the resume file...
+2025-09-08 09:29:58,463 - INFO - Resume updated successfully on Naukri at: 2025-09-08 09:29:58.463372
+2025-09-08 09:29:58,463 - INFO - Closing the browser...
+2025-09-08 09:30:02,170 - INFO - Resume update process completed successfully.

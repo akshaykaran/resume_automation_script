@@ -28,21 +28,15 @@ def update_resume_on_naukri(username, password):
     try:
         logger.info("Setting up Chrome options...")
         chrome_options = Options()
-        chrome_options.add_argument("--headless=new")  # Run in headless mode when automated
+        chrome_options.add_argument("--headless")  # Run in headless mode when automated
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        chrome_options.add_experimental_option('useAutomationExtension', False)
-        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-        chrome_options.add_argument(f"--user-data-dir={os.getenv('CHROME_USER_DATA_DIR')}")
 
         logger.info("Initializing WebDriver...")
-        chrome_options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager(driver_version="139.0.7258.155").install()), options=chrome_options)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         driver.maximize_window()
         
         logger.info("Opening Naukri website...")
@@ -75,24 +69,9 @@ def update_resume_on_naukri(username, password):
         time.sleep(random.uniform(1, 3))
 
         logger.info("Clicking on the Login button...")
-        # login_submit_button = driver.find_element(By.XPATH, "//button[@type='submit']")
-        # login_submit_button.click()
-        # time.sleep(random.uniform(5, 7))
-
-        login_submit_button = WebDriverWait(driver, 20).until(
-        EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
-        )
+        login_submit_button = driver.find_element(By.XPATH, "//button[@type='submit']")
         login_submit_button.click()
-        try:
-            WebDriverWait(driver, 30).until(
-            lambda d: "homepage" in d.current_url or "profile" in d.current_url
-            )
-            logger.info("Login successful, redirected to homepage")
-        except:
-            logger.error(f"Login likely failed, still on: {driver.current_url}")
-            driver.save_screenshot("login_failed.png")
-            return False
-        
+        time.sleep(random.uniform(5, 7))
 
         driver.get('https://www.naukri.com/mnjuser/homepage')
         time.sleep(random.uniform(3, 5))
@@ -143,6 +122,8 @@ def main():
     # Get credentials from environment variables
     username = os.getenv("NAUKRI_USERNAME")
     password = os.getenv("NAUKRI_PASSWORD")
+    # username = "akshaykaran2@gmail.com"
+    # password = "Aezakmi@0905"
     
 
     # Check if credentials are available
