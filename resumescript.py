@@ -73,6 +73,13 @@ def update_resume_on_naukri(username, password):
         login_submit_button.click()
         time.sleep(random.uniform(5, 7))
 
+        # ✅ Check if login was successful
+        if "homepage" in driver.current_url or "naukri.com/mnjuser" in driver.current_url:
+            logger.info("Successfully logged in to Naukri.")
+        else:
+            logger.warning("Login may have failed. Please verify credentials or CAPTCHA.")
+            return False
+
         driver.get('https://www.naukri.com/mnjuser/homepage')
         time.sleep(random.uniform(3, 5))
         logger.info("Opening User's Naukari homepage...")
@@ -85,7 +92,6 @@ def update_resume_on_naukri(username, password):
 
         logger.info("Clicking on the 'Update Resume' button...")
         update_resume_button = WebDriverWait(driver, 20).until(
-            # EC.presence_of_element_located((By.XPATH, "//input[@value='Update resume']"))
             EC.element_to_be_clickable((
             By.XPATH,
             "//button[contains(., 'Update Resume')] | //span[contains(., 'Update Resume')] | //input[@value='Update resume']"
