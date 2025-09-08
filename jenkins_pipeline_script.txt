@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    triggers {
+        // Runs at 9 AM, 3 PM, 9 PM every day
+        cron('H 9,15,21 * * *')
+    }
+
+    stages {
+        stage('Debug Credentials') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'naukri-login', usernameVariable: 'NAUKRI_USERNAME', passwordVariable: 'NAUKRI_PASSWORD')]) {
+                    bat '''
+                        echo NAUKRI_USERNAME=%NAUKRI_USERNAME%
+                        echo NAUKRI_PASSWORD length: %NAUKRI_PASSWORD:~0,1%*** (masked, real length cannot be shown in Windows batch easily)
+                    '''
+                }
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/akshaykaran/resume_automation_script.git', branch: 'main'
+            }
+        }
+
+        stage('Setup Python') {
+            steps {
+                bat '''
+                "C:\\Users\\aksha\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -m venv venv
+
+                call venv\\Scripts\\activate
+                python -m pip install --upgrade pip
+                pip install selenium webdriver-manager
+                '''
+            }
+        }
+
+        stage('Run Resume Update') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'naukri-login', usernameVariable: 'NAUKRI_USERNAME', passwordVariable: 'NAUKRI_PASSWORD')]) {
+                    bat '''
+                    call venv\\Scripts\\activate
+                    python resumescript.py
+                    '''
+                }
+            }
+        }
+    }
+}
