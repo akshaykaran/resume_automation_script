@@ -28,12 +28,15 @@ def update_resume_on_naukri(username, password):
     try:
         logger.info("Setting up Chrome options...")
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Run in headless mode when automated
+        #chrome_options.add_argument("--headless")  # Run in headless mode when automated
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option('useAutomationExtension', False)
+        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 
         logger.info("Initializing WebDriver...")
         chrome_options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
@@ -79,11 +82,14 @@ def update_resume_on_naukri(username, password):
         EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
         )
         login_submit_button.click()
-
-        # Wait until redirect to homepage is successful
-        WebDriverWait(driver, 30).until(
-        EC.url_contains("mnjuser/homepage")
-        )
+        try:
+            WebDriverWait(driver, 30).until(EC.url_contains("mnjuser/homepage"))
+            logger.info("Login successful, redirected to homepage")
+        except:
+            logger.error(f"Login likely failed, still on: {driver.current_url}")
+            driver.save_screenshot("login_failed.png")
+            return False
+        
 
         driver.get('https://www.naukri.com/mnjuser/homepage')
         time.sleep(random.uniform(3, 5))
